@@ -13,6 +13,8 @@
 #include <cstdio>
 #include <vector>
 #include <QMenu>
+#include <QThread>
+#include <memory>
 
 namespace Ui {
 class Dialog;
@@ -32,8 +34,9 @@ class Dialog : public QDialog
      QFileInfo fi;
     QString przycisk, nazwy="button", cala_nazwa;
     //QObject* obj = sender();
-    QMenu* myMenu;
-    QMenu* myMenu2;
+    //QMenu* myMenu;
+    std::shared_ptr<QMenu> myMenu = nullptr;
+    std::shared_ptr<QMenu> myMenu2 = nullptr;
     QPoint globalPos;
  //   player *odtwarzacz;
    // playlist *lista_muzyki;
@@ -47,9 +50,9 @@ class Dialog : public QDialog
 
 public:
     int a=0, mieszanie=0, x=0, y=0, mode=0, pos=0;
-QMediaPlayer* music;
-     QMediaPlaylist* lista;
-      void setList(QMediaPlaylist *pl);
+QMediaPlayer* music = nullptr;
+     std::shared_ptr<QMediaPlaylist> lista = nullptr;
+      void setList(std::shared_ptr<QMediaPlaylist> pl);
       QString directory;
      // QSignalMapper mapper;
 
@@ -58,6 +61,10 @@ void add_button(QString filepath);
 QPixmap set_pixmap_img(QString sciezka, QString plik);
 void set_album_page(QString sciezka);
 void set_main_listwidget(QDir album_dir, QStringList dir_list);
+
+QThread PlayerThread;
+
+static constexpr int max_rows=5;
 
 
     explicit Dialog(QWidget *parent = 0);
@@ -151,6 +158,7 @@ private slots:
 
 private:
     Ui::Dialog *ui;
+
 };
 
 #endif // DIALOG_H

@@ -10,7 +10,7 @@
 
 player::player()
 {
-    music2 = new QMediaPlayer;
+    music2 = std::make_shared<QMediaPlayer>();
 
     //music2 ->setPlaylist(m_list.getPlaylist());
 
@@ -48,10 +48,10 @@ void player::seek(int pos)
 
 QMediaPlayer* player::getPlayer()
 {
-    return music2;
+    return music2.get(); //chyba moze zawisnac
 }
 
-void player::setPlaylist(QMediaPlaylist* mpl)
+void player::setPlaylist(std::shared_ptr<QMediaPlaylist> mpl)
 {
-    music2->setPlaylist(mpl);
+    music2->setPlaylist(mpl.get());
 }

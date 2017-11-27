@@ -8,14 +8,16 @@
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
 #include <iostream>
+#include <QSharedPointer>
+#include <memory>
 
 //class playlist;
 
 class player
 {
 int music_volume=100, shuffle_val=0;
-QMediaPlayer* music2;
-QMediaPlaylist* m_list;
+std::shared_ptr<QMediaPlayer> music2;
+std::shared_ptr<QMediaPlaylist> m_list;
 
 public:
     player();
@@ -25,7 +27,7 @@ public:
     void losuj();
     void seek(int pos);
     QMediaPlayer* getPlayer();
-    void setPlaylist(QMediaPlaylist* mpl);
+    void setPlaylist(std::shared_ptr<QMediaPlaylist> mpl);
 
 
 

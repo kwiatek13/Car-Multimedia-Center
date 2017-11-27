@@ -11,13 +11,15 @@
 #include <QStringList>
 #include <QDirIterator>
 #include <QFileInfo>
+#include <memory>
 
 class playlist:public QDialog
 {
     Q_OBJECT
 
-     QMediaPlaylist* music_list;
-     QMediaPlayer* player_p;
+    // QMediaPlaylist* music_list;
+    std::shared_ptr<QMediaPlaylist> music_list;
+     QMediaPlayer* player_p = nullptr;
      QFile playlist_file;
      QString buffer,current_list;
      QStringList list, del_buffer, playlist_list;
@@ -29,10 +31,12 @@ class playlist:public QDialog
      int created=0, selected_index=0, random_index=0;
      QFileInfo info;
 
+     std::shared_ptr <QMediaPlaylist> smartPTRTest;
+
 public:
    playlist();
    QList<QMediaContent> getContent();
- QMediaPlaylist* getPlaylist();
+ std::shared_ptr<QMediaPlaylist> getPlaylist();
    void setPlaylist(QList<QMediaContent> content);
        void setPlayer(QMediaPlayer* pl);
        void next();

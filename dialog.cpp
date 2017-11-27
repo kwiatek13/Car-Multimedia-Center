@@ -28,6 +28,9 @@ pl.setPlayer(odtwarzacz.getPlayer());
     lista = pl.getPlaylist();
     music = odtwarzacz.getPlayer();
 
+   // music->moveToThread(&PlayerThread);
+   // PlayerThread.start();
+
     ui->label_image->setPixmap(set_pixmap_img("/home/lukas/Dokumenty","albumart.jpg"));
 
     list_folders();
@@ -58,7 +61,9 @@ Dialog::~Dialog()
 void Dialog::on_button_browser_clicked()
 {
      // system("chromium");
+    PlayerThread.quit();
     pl.fun_start();
+    PlayerThread.start();
     odtwarzacz.odtworz(0);
 }
 
@@ -234,6 +239,8 @@ pl.readPlaylist("playlist"); //wczytanie playlisty ulubionych utworow
 
 void Dialog::on_button_exit_clicked()
 {
+    PlayerThread.quit();
+    PlayerThread.wait();
     close();
 }
 
@@ -242,9 +249,9 @@ void Dialog::list_folders() //zaladowanie elementow do biblioteki
 {
 folders << "";
 QDirIterator directories("/home/lukas/Muzyka", QDir::Dirs | QDir::NoSymLinks | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
-QString abc;
+//QString abc;
 
-int a=1;
+//int a=1;
 if(!directories.hasNext()) return;
    do{
     directories.next();
@@ -298,7 +305,7 @@ void Dialog::add_button(QString filepath) //funkcja do dynamicznego dodawania pr
 
     x++;
     pos++;
-    if(x == 5)
+    if(x == max_rows)
     {
         x=0;
         y++;
@@ -328,7 +335,7 @@ ui->stackedWidget->setCurrentIndex(2);
 
     ui->listWidget_album_page->clear();
 
-    for(const QString& f:files)
+    for(const QString& f:files) // Do sprawdzenia
     {
         content.push_back(QUrl::fromLocalFile(folder.path()+"/" + f));
      fi.setFile(f);
@@ -396,7 +403,7 @@ void Dialog::showContextMenu(const QPoint &pos) //menu kontekstowe z dodwaniem u
 
         globalPos = ui->listWidget->mapToGlobal(pos);
 
-        myMenu = new QMenu;
+        myMenu = std::make_shared<QMenu>();
 
 
         myMenu->addAction("Dodaj do ulubionych", this, SLOT(add_to_playlist()));
@@ -409,7 +416,7 @@ void Dialog::showContextMenu(const QPoint &pos) //menu kontekstowe z dodwaniem u
 void Dialog::showPlaylistContextMenu(const QPoint &pos2) //menu kontekstowe z usuaniem utworow z playlisty
 {
  globalPos = ui->playlist_listwidget->mapToGlobal(pos2);
- myMenu2 = new QMenu;
+ //myMenu2 = std::make_shared<QMenu>(); //do sprawdzenia
 
  myMenu2->addAction("Usun z listy", this, SLOT(remove_from_playlist()));
   myMenu2->exec(globalPos);

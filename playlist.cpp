@@ -13,14 +13,15 @@ outStream.setDevice(&playlist_file);
 }
 
 
-QMediaPlaylist* playlist::getPlaylist()
+std::shared_ptr<QMediaPlaylist> playlist::getPlaylist()
 {
-    QMediaPlaylist* music_list_get;
+  //  QMediaPlaylist* music_list_get;
   //  music_list_get = new QMediaPlaylist(music_list_get);
 
-    music_list_get = music_list;
+    auto music_list_get = music_list;
 
-    return music_list_get;
+    //return music_list_get;
+    return music_list;
 }
 
 void playlist::setPlaylist(QList<QMediaContent> content)
@@ -31,7 +32,7 @@ void playlist::setPlaylist(QList<QMediaContent> content)
 
 void playlist::setPlayer(QMediaPlayer *pl)
 {
- if(created == 0)  music_list = new QMediaPlaylist(pl);
+ if(created == 0)  music_list = std::make_shared<QMediaPlaylist>(pl);
     created=1;
 }
 

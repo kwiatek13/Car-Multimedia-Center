@@ -2,7 +2,7 @@
 #define PLAYER_H
 
 //#include "dialog.h"
-#include "playlist.h"
+//#include "playlist.h"
 #include <QDialog>
 #include <QFileDialog>
 #include <QMediaPlayer>
@@ -11,7 +11,7 @@
 #include <QSharedPointer>
 #include <memory>
 
-//class playlist;
+class playlist;
 
 class player
 {

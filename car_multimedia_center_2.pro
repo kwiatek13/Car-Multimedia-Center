@@ -24,3 +24,7 @@ HEADERS  += dialog.h \
     player.h
 
 FORMS    += dialog.ui
+
+INSTALLS        = target
+target.files    = widgettest
+target.path     = /home/pi
